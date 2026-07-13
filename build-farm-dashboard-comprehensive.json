@@ -1,0 +1,3291 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 6000000000
+              },
+              {
+                "color": "red",
+                "value": 7500000000
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.4.3",
+      "targets": [
+        {
+          "expr": "avg(etcd_mvcc_db_total_size_in_bytes)",
+          "interval": "",
+          "legendFormat": "etcd DB Size",
+          "refId": "A"
+        }
+      ],
+      "title": "etcd DB Total Size",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 5000000000
+              },
+              {
+                "color": "red",
+                "value": 6500000000
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 4,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.4.3",
+      "targets": [
+        {
+          "expr": "avg(etcd_mvcc_db_total_size_in_use_in_bytes)",
+          "interval": "",
+          "legendFormat": "etcd DB In Use",
+          "refId": "A"
+        }
+      ],
+      "title": "etcd DB Size In Use",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 8,
+        "y": 0
+      },
+      "id": 3,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.4.3",
+      "targets": [
+        {
+          "expr": "sum(etcd_server_is_leader)",
+          "interval": "",
+          "legendFormat": "Leader Count",
+          "refId": "A"
+        }
+      ],
+      "title": "etcd Is Leader",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 40
+              },
+              {
+                "color": "red",
+                "value": 60
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 12,
+        "y": 0
+      },
+      "id": 18,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.4.3",
+      "targets": [
+        {
+          "expr": "100 * (avg(etcd_mvcc_db_total_size_in_bytes) - avg(etcd_mvcc_db_total_size_in_use_in_bytes)) / avg(etcd_mvcc_db_total_size_in_bytes)",
+          "interval": "",
+          "legendFormat": "Fragmentation %",
+          "refId": "A"
+        }
+      ],
+      "title": "etcd DB Fragmentation %",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 0.05
+              },
+              {
+                "color": "red",
+                "value": 0.1
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 16,
+        "y": 0
+      },
+      "id": 20,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.4.3",
+      "targets": [
+        {
+          "expr": "sum(rate(etcd_server_leader_changes_seen_total[5m]))",
+          "interval": "",
+          "legendFormat": "Leader Changes Rate",
+          "refId": "A"
+        }
+      ],
+      "title": "etcd Leader Changes (5m rate)",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 80
+              },
+              {
+                "color": "red",
+                "value": 90
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 20,
+        "y": 0
+      },
+      "id": 21,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.4.3",
+      "targets": [
+        {
+          "expr": "100 * avg(etcd_mvcc_db_total_size_in_bytes) / 8589934592",
+          "interval": "",
+          "legendFormat": "Quota Usage %",
+          "refId": "A"
+        }
+      ],
+      "title": "etcd Quota Usage % (8GB)",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 3
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 0,
+        "y": 4
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.4.3",
+      "targets": [
+        {
+          "expr": "sum(etcd_server_has_leader)",
+          "interval": "",
+          "legendFormat": "Nodes with Leader",
+          "refId": "A"
+        }
+      ],
+      "title": "etcd Has Leader",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 10
+              },
+              {
+                "color": "red",
+                "value": 100
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 4,
+        "y": 4
+      },
+      "id": 5,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "expr": "sum(etcd_server_proposals_pending)",
+          "interval": "",
+          "legendFormat": "Pending Proposals",
+          "refId": "A"
+        }
+      ],
+      "title": "etcd Pending Proposals",
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 2000
+              },
+              {
+                "color": "red",
+                "value": 5000
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 8,
+        "y": 4
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.4.3",
+      "targets": [
+        {
+          "expr": "sum(kube_pod_info{namespace=~\"build-farm.*\"})",
+          "interval": "",
+          "legendFormat": "Build Farm Pods",
+          "refId": "A"
+        }
+      ],
+      "title": "Build Farm Pods",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 4
+      },
+      "id": 16,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "expr": "sum(kube_node_info)",
+          "interval": "",
+          "legendFormat": "Total Nodes",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(kube_node_status_condition{condition=\"Ready\",status=\"true\"})",
+          "interval": "",
+          "legendFormat": "Nodes Ready",
+          "refId": "B"
+        },
+        {
+          "expr": "sum(kube_node_status_condition{condition=\"Ready\",status=\"false\"})",
+          "interval": "",
+          "legendFormat": "Nodes Not Ready",
+          "refId": "C"
+        },
+        {
+          "expr": "sum(kube_node_status_condition{condition=\"Ready\",status=\"unknown\"})",
+          "interval": "",
+          "legendFormat": "Nodes Unknown",
+          "refId": "D"
+        }
+      ],
+      "title": "OpenShift Nodes by Status",
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "id": 7,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "expr": "avg(etcd_mvcc_db_total_size_in_bytes)",
+          "interval": "",
+          "legendFormat": "Total Size (8GB quota)",
+          "refId": "A"
+        },
+        {
+          "expr": "avg(etcd_mvcc_db_total_size_in_use_in_bytes)",
+          "interval": "",
+          "legendFormat": "Size In Use",
+          "refId": "B"
+        },
+        {
+          "expr": "avg(etcd_mvcc_db_total_size_in_bytes) - avg(etcd_mvcc_db_total_size_in_use_in_bytes)",
+          "interval": "",
+          "legendFormat": "Fragmentation",
+          "refId": "C"
+        }
+      ],
+      "title": "etcd Database Size & Fragmentation",
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 12
+      },
+      "id": 8,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "expr": "sum(etcd_server_is_leader)",
+          "interval": "",
+          "legendFormat": "Is Leader (should be 1)",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(etcd_server_has_leader)",
+          "interval": "",
+          "legendFormat": "Has Leader (should be 3)",
+          "refId": "B"
+        },
+        {
+          "expr": "sum(rate(etcd_server_leader_changes_seen_total[5m]))",
+          "interval": "",
+          "legendFormat": "Leader Changes (5m rate)",
+          "refId": "C"
+        }
+      ],
+      "title": "etcd Leader Health & Stability",
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 16
+      },
+      "id": 9,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.99, sum by (le) (rate(etcd_disk_wal_fsync_duration_seconds_bucket[5m])))",
+          "interval": "",
+          "legendFormat": "WAL fsync Total",
+          "refId": "A"
+        },
+        {
+          "expr": "histogram_quantile(0.99, sum by (instance, le) (rate(etcd_disk_wal_fsync_duration_seconds_bucket[5m])))",
+          "interval": "",
+          "legendFormat": "WAL fsync - {{instance}}",
+          "refId": "B"
+        },
+        {
+          "expr": "histogram_quantile(0.99, sum by (le) (rate(etcd_disk_backend_commit_duration_seconds_bucket[5m])))",
+          "interval": "",
+          "legendFormat": "Backend commit Total",
+          "refId": "C"
+        },
+        {
+          "expr": "histogram_quantile(0.99, sum by (instance, le) (rate(etcd_disk_backend_commit_duration_seconds_bucket[5m])))",
+          "interval": "",
+          "legendFormat": "Backend commit - {{instance}}",
+          "refId": "D"
+        }
+      ],
+      "title": "etcd Disk Performance (99th percentile)",
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 1000
+              },
+              {
+                "color": "red",
+                "value": 5000
+              }
+            ]
+          },
+          "unit": "iops"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 20
+      },
+      "id": 30,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "expr": "sum(rate(container_fs_reads_total{namespace=\"openshift-etcd\",pod=~\"etcd.*\",device=~\"/dev/.*\"}[5m]))",
+          "interval": "",
+          "legendFormat": "etcd Read IOPS (Total)",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(rate(container_fs_writes_total{namespace=\"openshift-etcd\",pod=~\"etcd.*\",device=~\"/dev/.*\"}[5m]))",
+          "interval": "",
+          "legendFormat": "etcd Write IOPS (Total)",
+          "refId": "B"
+        },
+        {
+          "expr": "sum(rate(container_fs_reads_total{namespace=\"openshift-kube-apiserver\",pod=~\"kube-apiserver.*\",device=~\"/dev/.*\"}[5m]))",
+          "interval": "",
+          "legendFormat": "kube-apiserver Read IOPS (Total)",
+          "refId": "C"
+        },
+        {
+          "expr": "sum(rate(container_fs_writes_total{namespace=\"openshift-kube-apiserver\",pod=~\"kube-apiserver.*\",device=~\"/dev/.*\"}[5m]))",
+          "interval": "",
+          "legendFormat": "kube-apiserver Write IOPS (Total)",
+          "refId": "D"
+        },
+        {
+          "expr": "sum by (pod) (rate(container_fs_reads_total{namespace=\"openshift-etcd\",pod=~\"etcd.*\",device=~\"/dev/.*\"}[5m]))",
+          "interval": "",
+          "legendFormat": "{{pod}} Read",
+          "refId": "E"
+        },
+        {
+          "expr": "sum by (pod) (rate(container_fs_writes_total{namespace=\"openshift-etcd\",pod=~\"etcd.*\",device=~\"/dev/.*\"}[5m]))",
+          "interval": "",
+          "legendFormat": "{{pod}} Write",
+          "refId": "F"
+        },
+        {
+          "expr": "sum by (pod) (rate(container_fs_reads_total{namespace=\"openshift-kube-apiserver\",pod=~\"kube-apiserver.*\",device=~\"/dev/.*\"}[5m]))",
+          "interval": "",
+          "legendFormat": "{{pod}} Read",
+          "refId": "G"
+        },
+        {
+          "expr": "sum by (pod) (rate(container_fs_writes_total{namespace=\"openshift-kube-apiserver\",pod=~\"kube-apiserver.*\",device=~\"/dev/.*\"}[5m]))",
+          "interval": "",
+          "legendFormat": "{{pod}} Write",
+          "refId": "H"
+        }
+      ],
+      "title": "Disk IOPS - etcd & kube-apiserver",
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 10
+              },
+              {
+                "color": "red",
+                "value": 50
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 28
+      },
+      "id": 31,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "9.4.3",
+      "targets": [
+        {
+          "expr": "1000 * sum by (instance) (rate(node_disk_read_time_seconds_total{device=~\"nvme.*\"}[5m])) / sum by (instance) (rate(node_disk_reads_completed_total{device=~\"nvme.*\"}[5m])) * on(instance) group_left(node) label_replace(kube_node_role{role=\"master\"}, \"instance\", \"$1\", \"node\", \"(.+)\")",
+          "interval": "",
+          "legendFormat": "Read Latency - {{node}}",
+          "refId": "A"
+        },
+        {
+          "expr": "1000 * sum by (instance) (rate(node_disk_write_time_seconds_total{device=~\"nvme.*\"}[5m])) / sum by (instance) (rate(node_disk_writes_completed_total{device=~\"nvme.*\"}[5m])) * on(instance) group_left(node) label_replace(kube_node_role{role=\"master\"}, \"instance\", \"$1\", \"node\", \"(.+)\")",
+          "interval": "",
+          "legendFormat": "Write Latency - {{node}}",
+          "refId": "B"
+        },
+        {
+          "expr": "1000 * sum by (instance) ((rate(node_disk_read_time_seconds_total{device=~\"nvme.*\"}[5m]) + rate(node_disk_write_time_seconds_total{device=~\"nvme.*\"}[5m])) / (rate(node_disk_reads_completed_total{device=~\"nvme.*\"}[5m]) + rate(node_disk_writes_completed_total{device=~\"nvme.*\"}[5m]))) * on(instance) group_left(node) label_replace(kube_node_role{role=\"master\"}, \"instance\", \"$1\", \"node\", \"(.+)\")",
+          "interval": "",
+          "legendFormat": "Combined Avg Latency - {{node}}",
+          "refId": "C"
+        },
+        {
+          "expr": "1000 * sum by (instance,device) (rate(node_disk_io_time_weighted_seconds_total{device=~\"nvme.*\"}[5m])) * on(instance) group_left(node) label_replace(kube_node_role{role=\"master\"}, \"instance\", \"$1\", \"node\", \"(.+)\")",
+          "interval": "",
+          "legendFormat": "Avg Wait Time - {{node}} ({{device}})",
+          "refId": "D"
+        }
+      ],
+      "title": "Disk Latency - etcd Control Plane Nodes",
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 1000
+              },
+              {
+                "color": "red",
+                "value": 5000
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*IOPS.*"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "iops"
+              },
+              {
+                "id": "custom.axisPlacement",
+                "value": "left"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*Page Faults.*"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "Read IOPS - .*10-0-1-64.*"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "blue"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "Page Faults - .*10-0-1-64.*"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "orange"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "Read IOPS - .*10-0-60-155.*"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "green"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "Page Faults - .*10-0-60-155.*"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "purple"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "Read IOPS - .*10-0-86-171.*"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "red"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "Page Faults - .*10-0-86-171.*"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "yellow"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 28
+      },
+      "id": 34,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "9.4.3",
+      "targets": [
+        {
+          "expr": "sum by (node) (rate(container_fs_reads_total{namespace=\"openshift-etcd\",pod=~\"etcd.*\",device=~\"/dev/.*\"}[5m]))",
+          "interval": "",
+          "legendFormat": "Read IOPS - {{node}}",
+          "refId": "A"
+        },
+        {
+          "expr": "instance:node_vmstat_pgmajfault:rate1m * on(instance) group_left(node) max without(container, endpoint, job, namespace, service) (label_replace(kube_node_role{role=\"master\"}, \"instance\", \"$1\", \"node\", \"(.+)\"))",
+          "interval": "",
+          "legendFormat": "Page Faults - {{node}}",
+          "refId": "B"
+        }
+      ],
+      "title": "etcd Disk IOPS & Memory Page Faults",
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 24
+      },
+      "id": 10,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "expr": "sum(etcd_server_proposals_pending)",
+          "interval": "",
+          "legendFormat": "Pending Proposals",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(rate(etcd_server_proposals_committed_total[5m]))",
+          "interval": "",
+          "legendFormat": "Proposal Commit Rate",
+          "refId": "B"
+        },
+        {
+          "expr": "sum(rate(etcd_server_proposals_applied_total[5m]))",
+          "interval": "",
+          "legendFormat": "Proposal Apply Rate",
+          "refId": "C"
+        }
+      ],
+      "title": "etcd Request Performance",
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 36
+      },
+      "id": 11,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.99, sum(rate(apiserver_request_duration_seconds_bucket{resource=\"pods\",verb=\"GET\"}[5m])) by (le))",
+          "interval": "",
+          "legendFormat": "GET pods",
+          "refId": "A"
+        },
+        {
+          "expr": "histogram_quantile(0.99, sum(rate(apiserver_request_duration_seconds_bucket{resource=\"pods\",verb=\"LIST\"}[5m])) by (le))",
+          "interval": "",
+          "legendFormat": "LIST pods",
+          "refId": "B"
+        },
+        {
+          "expr": "histogram_quantile(0.99, sum(rate(apiserver_request_duration_seconds_bucket{resource=\"pods\",verb=\"APPLY\"}[5m])) by (le))",
+          "interval": "",
+          "legendFormat": "APPLY pods",
+          "refId": "C"
+        },
+        {
+          "expr": "histogram_quantile(0.99, sum(rate(apiserver_request_duration_seconds_bucket{resource=\"pods\",verb=\"PATCH\"}[5m])) by (le))",
+          "interval": "",
+          "legendFormat": "PATCH pods",
+          "refId": "D"
+        },
+        {
+          "expr": "histogram_quantile(0.99, sum(rate(apiserver_request_duration_seconds_bucket{resource=\"pods\",verb=\"DELETE\"}[5m])) by (le))",
+          "interval": "",
+          "legendFormat": "DELETE pods",
+          "refId": "E"
+        },
+        {
+          "expr": "histogram_quantile(0.99, sum(rate(apiserver_request_duration_seconds_bucket{resource=\"jobs\",verb=\"GET\"}[5m])) by (le))",
+          "interval": "",
+          "legendFormat": "GET jobs",
+          "refId": "F"
+        },
+        {
+          "expr": "histogram_quantile(0.99, sum(rate(apiserver_request_duration_seconds_bucket{resource=\"jobs\",verb=\"LIST\"}[5m])) by (le))",
+          "interval": "",
+          "legendFormat": "LIST jobs",
+          "refId": "G"
+        },
+        {
+          "expr": "histogram_quantile(0.99, sum(rate(apiserver_request_duration_seconds_bucket{resource=\"jobs\",verb=\"APPLY\"}[5m])) by (le))",
+          "interval": "",
+          "legendFormat": "APPLY jobs",
+          "refId": "H"
+        },
+        {
+          "expr": "histogram_quantile(0.99, sum(rate(apiserver_request_duration_seconds_bucket{resource=\"jobs\",verb=\"PATCH\"}[5m])) by (le))",
+          "interval": "",
+          "legendFormat": "PATCH jobs",
+          "refId": "I"
+        },
+        {
+          "expr": "histogram_quantile(0.99, sum(rate(apiserver_request_duration_seconds_bucket{resource=\"jobs\",verb=\"DELETE\"}[5m])) by (le))",
+          "interval": "",
+          "legendFormat": "DELETE jobs",
+          "refId": "J"
+        }
+      ],
+      "title": "API Server Request Latency (99th percentile - Pods & Jobs)",
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 36
+      },
+      "id": 12,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "expr": "sum(kube_pod_info)",
+          "interval": "",
+          "legendFormat": "Total Pods",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(kube_job_info)",
+          "interval": "",
+          "legendFormat": "Total Jobs",
+          "refId": "B"
+        },
+        {
+          "expr": "cluster:usage:resources:sum{resource=~\"(events)\"}",
+          "interval": "",
+          "legendFormat": "Total Events",
+          "refId": "C"
+        },
+        {
+          "expr": "sum(kube_pod_info{namespace=~\"build-farm.*\"})",
+          "interval": "",
+          "legendFormat": "Build Farm Pods",
+          "refId": "D"
+        },
+        {
+          "expr": "count(count by (namespace)(kube_namespace_status_phase{phase=\"Active\",namespace=~\"build-farm.*\"}))",
+          "interval": "",
+          "legendFormat": "Build Farm Namespaces",
+          "refId": "E"
+        },
+        {
+          "expr": "sum(kube_secret_info)",
+          "interval": "",
+          "legendFormat": "Total Secrets",
+          "refId": "F"
+        }
+      ],
+      "title": "Object Counts (Pods, Jobs, Events, Secrets)",
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "yellow",
+                "value": 100
+              },
+              {
+                "color": "red",
+                "value": 500
+              }
+            ]
+          },
+          "unit": "reqps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 44
+      },
+      "id": 28,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "expr": "sum(rate(apiserver_request_total{resource=\"pods\",verb=\"GET\"}[5m]))",
+          "interval": "",
+          "legendFormat": "Pods GET",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(rate(apiserver_request_total{resource=\"pods\",verb=\"LIST\"}[5m]))",
+          "interval": "",
+          "legendFormat": "Pods LIST",
+          "refId": "B"
+        },
+        {
+          "expr": "sum(rate(apiserver_request_total{resource=\"pods\",verb=\"APPLY\"}[5m]))",
+          "interval": "",
+          "legendFormat": "Pods APPLY",
+          "refId": "C"
+        },
+        {
+          "expr": "sum(rate(apiserver_request_total{resource=\"pods\",verb=\"PATCH\"}[5m]))",
+          "interval": "",
+          "legendFormat": "Pods PATCH",
+          "refId": "D"
+        },
+        {
+          "expr": "sum(rate(apiserver_request_total{resource=\"pods\",verb=\"DELETE\"}[5m]))",
+          "interval": "",
+          "legendFormat": "Pods DELETE",
+          "refId": "E"
+        },
+        {
+          "expr": "sum(rate(apiserver_request_total{resource=\"jobs\",verb=\"GET\"}[5m]))",
+          "interval": "",
+          "legendFormat": "Jobs GET",
+          "refId": "F"
+        },
+        {
+          "expr": "sum(rate(apiserver_request_total{resource=\"jobs\",verb=\"LIST\"}[5m]))",
+          "interval": "",
+          "legendFormat": "Jobs LIST",
+          "refId": "G"
+        },
+        {
+          "expr": "sum(rate(apiserver_request_total{resource=\"jobs\",verb=\"APPLY\"}[5m]))",
+          "interval": "",
+          "legendFormat": "Jobs APPLY",
+          "refId": "H"
+        },
+        {
+          "expr": "sum(rate(apiserver_request_total{resource=\"jobs\",verb=\"PATCH\"}[5m]))",
+          "interval": "",
+          "legendFormat": "Jobs PATCH",
+          "refId": "I"
+        },
+        {
+          "expr": "sum(rate(apiserver_request_total{resource=\"jobs\",verb=\"DELETE\"}[5m]))",
+          "interval": "",
+          "legendFormat": "Jobs DELETE",
+          "refId": "J"
+        }
+      ],
+      "title": "API Operations Rate - Pods & Jobs",
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 52
+      },
+      "id": 13,
+      "options": {
+        "legend": {
+          "calcs": [
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "expr": "count(ALERTS{alertname=\"etcdExcessiveDatabaseGrowth\"})",
+          "interval": "",
+          "legendFormat": "etcdExcessiveDatabaseGrowth",
+          "refId": "A"
+        },
+        {
+          "expr": "count(ALERTS{alertname=\"etcdDatabaseQuotaLowSpace\"})",
+          "interval": "",
+          "legendFormat": "etcdDatabaseQuotaLowSpace",
+          "refId": "B"
+        },
+        {
+          "expr": "count(ALERTS{alertname=\"etcdMemberCommunicationSlow\"})",
+          "interval": "",
+          "legendFormat": "etcdMemberCommunicationSlow",
+          "refId": "C"
+        },
+        {
+          "expr": "count(ALERTS{alertname=\"etcdGRPCRequestsSlow\"})",
+          "interval": "",
+          "legendFormat": "etcdGRPCRequestsSlow",
+          "refId": "D"
+        },
+        {
+          "expr": "count(ALERTS{alertname=\"etcdDatabaseHighFragmentationRatio\"})",
+          "interval": "",
+          "legendFormat": "etcdDatabaseHighFragmentationRatio",
+          "refId": "E"
+        },
+        {
+          "expr": "count(ALERTS{alertname=\"etcdHighNumberOfFailedGRPCRequests\"})",
+          "interval": "",
+          "legendFormat": "etcdHighNumberOfFailedGRPCRequests",
+          "refId": "F"
+        },
+        {
+          "expr": "count(ALERTS{alertname=\"etcdMembersDown\"})",
+          "interval": "",
+          "legendFormat": "etcdMembersDown",
+          "refId": "G"
+        }
+      ],
+      "title": "etcd Health Alerts",
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "yellow",
+                "value": 70
+              },
+              {
+                "color": "red",
+                "value": 85
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 60
+      },
+      "id": 14,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "expr": "100 * sum(rate(container_cpu_usage_seconds_total{container=\"kube-apiserver\",namespace=\"openshift-kube-apiserver\"}[5m]))",
+          "interval": "",
+          "legendFormat": "kube-apiserver CPU %",
+          "refId": "A"
+        },
+        {
+          "expr": "100 * sum(rate(container_cpu_usage_seconds_total{container=\"etcd\",namespace=\"openshift-etcd\"}[5m]))",
+          "interval": "",
+          "legendFormat": "etcd CPU %",
+          "refId": "B"
+        },
+        {
+          "expr": "100 * sum(rate(container_cpu_usage_seconds_total{container=\"kube-scheduler\",namespace=\"openshift-kube-scheduler\"}[5m]))",
+          "interval": "",
+          "legendFormat": "kube-scheduler CPU %",
+          "refId": "C"
+        }
+      ],
+      "title": "Control Plane CPU Usage",
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "yellow",
+                "value": 1073741824
+              },
+              {
+                "color": "red",
+                "value": 2147483648
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 60
+      },
+      "id": 15,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "expr": "max by(pod, namespace) (container_memory_working_set_bytes{container=\"kube-apiserver\",namespace=\"openshift-kube-apiserver\"})",
+          "interval": "",
+          "legendFormat": "kube-apiserver - {{pod}}",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(max by(pod, namespace) (container_memory_working_set_bytes{container=\"kube-apiserver\",namespace=\"openshift-kube-apiserver\"}))",
+          "interval": "",
+          "legendFormat": "kube-apiserver Total",
+          "refId": "B"
+        },
+        {
+          "expr": "max by(pod, namespace) (container_memory_working_set_bytes{container=\"etcd\",namespace=\"openshift-etcd\"})",
+          "interval": "",
+          "legendFormat": "etcd - {{pod}}",
+          "refId": "C"
+        },
+        {
+          "expr": "sum(max by(pod, namespace) (container_memory_working_set_bytes{container=\"etcd\",namespace=\"openshift-etcd\"}))",
+          "interval": "",
+          "legendFormat": "etcd Total",
+          "refId": "D"
+        },
+        {
+          "expr": "max by(pod, namespace) (container_memory_working_set_bytes{container=\"kube-scheduler\",namespace=\"openshift-kube-scheduler\"})",
+          "interval": "",
+          "legendFormat": "kube-scheduler - {{pod}}",
+          "refId": "E"
+        },
+        {
+          "expr": "sum(max by(pod, namespace) (container_memory_working_set_bytes{container=\"kube-scheduler\",namespace=\"openshift-kube-scheduler\"}))",
+          "interval": "",
+          "legendFormat": "kube-scheduler Total",
+          "refId": "F"
+        }
+      ],
+      "title": "Control Plane Memory Usage",
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 70
+              },
+              {
+                "color": "red",
+                "value": 85
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "Cached\\+Buffers.*"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 68
+      },
+      "id": 32,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "9.4.3",
+      "targets": [
+        {
+          "expr": "node_memory_MemTotal_bytes * on(instance) group_left() max without(container, endpoint, job, namespace, service) (label_replace(kube_node_role{role=\"master\",node=~\"$_master_node\"}, \"instance\", \"$1\", \"node\", \"(.+)\"))",
+          "interval": "",
+          "legendFormat": "Total - {{instance}}",
+          "refId": "A"
+        },
+        {
+          "expr": "node_memory_MemAvailable_bytes * on(instance) group_left() max without(container, endpoint, job, namespace, service) (label_replace(kube_node_role{role=\"master\",node=~\"$_master_node\"}, \"instance\", \"$1\", \"node\", \"(.+)\"))",
+          "interval": "",
+          "legendFormat": "Available - {{instance}}",
+          "refId": "B"
+        },
+        {
+          "expr": "(node_memory_MemTotal_bytes - (node_memory_MemFree_bytes + node_memory_Buffers_bytes + node_memory_Cached_bytes)) * on(instance) group_left() max without(container, endpoint, job, namespace, service) (label_replace(kube_node_role{role=\"master\",node=~\"$_master_node\"}, \"instance\", \"$1\", \"node\", \"(.+)\"))",
+          "interval": "",
+          "legendFormat": "Used - {{instance}}",
+          "refId": "C"
+        },
+        {
+          "expr": "node_memory_Active_bytes * on(instance) group_left() max without(container, endpoint, job, namespace, service) (label_replace(kube_node_role{role=\"master\",node=~\"$_master_node\"}, \"instance\", \"$1\", \"node\", \"(.+)\"))",
+          "interval": "",
+          "legendFormat": "Active - {{instance}}",
+          "refId": "D"
+        },
+        {
+          "expr": "(node_memory_Cached_bytes + node_memory_Buffers_bytes) * on(instance) group_left() max without(container, endpoint, job, namespace, service) (label_replace(kube_node_role{role=\"master\",node=~\"$_master_node\"}, \"instance\", \"$1\", \"node\", \"(.+)\"))",
+          "interval": "",
+          "legendFormat": "Cached+Buffers - {{instance}}",
+          "refId": "E"
+        }
+      ],
+      "title": "Master Nodes Memory Usage",
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 32000000000
+              },
+              {
+                "color": "red",
+                "value": 48000000000
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 76
+      },
+      "id": 33,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "9.4.3",
+      "targets": [
+        {
+          "expr": "(node_memory_MemTotal_bytes - (node_memory_MemFree_bytes + node_memory_Buffers_bytes + node_memory_Cached_bytes)) * on(instance) group_left() max without(container, endpoint, job, namespace, service) (label_replace(kube_node_role{role=\"master\",node=~\"$_master_node\"}, \"instance\", \"$1\", \"node\", \"(.+)\"))",
+          "interval": "",
+          "legendFormat": "Master Node Used - {{instance}}",
+          "refId": "A"
+        },
+        {
+          "expr": "max by(pod, namespace) (container_memory_working_set_bytes{container=\"kube-apiserver\",namespace=\"openshift-kube-apiserver\"})",
+          "interval": "",
+          "legendFormat": "kube-apiserver - {{pod}}",
+          "refId": "B"
+        },
+        {
+          "expr": "max by(pod, namespace) (container_memory_working_set_bytes{container=\"etcd\",namespace=\"openshift-etcd\"})",
+          "interval": "",
+          "legendFormat": "etcd - {{pod}}",
+          "refId": "C"
+        }
+      ],
+      "title": "Master Nodes & Control Plane Memory Overview",
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "yellow",
+                "value": 5
+              },
+              {
+                "color": "red",
+                "value": 15
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 84
+      },
+      "id": 22,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "expr": "etcd_debugging_mvcc_db_compaction_pause_duration_milliseconds_sum/etcd_debugging_mvcc_db_compaction_pause_duration_milliseconds_count/1000",
+          "interval": "",
+          "legendFormat": "Avg Compaction Duration",
+          "refId": "A"
+        },
+        {
+          "expr": "etcd_disk_backend_defrag_duration_seconds_sum/etcd_disk_backend_defrag_duration_seconds_count",
+          "interval": "",
+          "legendFormat": "Avg Defrag Duration ⚠️",
+          "refId": "B"
+        },
+        {
+          "expr": "increase(etcd_debugging_mvcc_db_compaction_total_duration_milliseconds_sum[5m])/1000",
+          "interval": "",
+          "legendFormat": "Total Compaction Time (5m)",
+          "refId": "C"
+        }
+      ],
+      "title": "etcd Compaction & Defragmentation Duration ⚠️",
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "yellow",
+                "value": 10
+              },
+              {
+                "color": "red",
+                "value": 50
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 84
+      },
+      "id": 29,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "expr": "instance:node_vmstat_pgmajfault:rate1m * on(instance) group_left() max without(container, endpoint, job, namespace, service) (label_replace(kube_node_role{role=\"master\"}, \"instance\", \"$1\", \"node\", \"(.+)\"))",
+          "interval": "",
+          "legendFormat": "{{instance}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Memory Page Faults - Control Plane Nodes",
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "yellow",
+                "value": 10
+              },
+              {
+                "color": "red",
+                "value": 50
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 92
+      },
+      "id": 26,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "expr": "etcd_disk_defrag_inflight",
+          "interval": "",
+          "legendFormat": "Defrag In Progress",
+          "refId": "A"
+        },
+        {
+          "expr": "scalar(min(time() - etcd_debugging_mvcc_db_compaction_last) < bool 20)",
+          "interval": "",
+          "legendFormat": "Compaction Recent (30s)",
+          "refId": "B"
+        }
+      ],
+      "title": "etcd Compaction & Defragmentation Events",
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "yellow",
+                "value": 10
+              },
+              {
+                "color": "red",
+                "value": 50
+              }
+            ]
+          },
+          "unit": "reqps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 92
+      },
+      "id": 25,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "expr": "rate(grpc_server_started_total{grpc_service=\"etcdserverpb.KV\",grpc_method=\"Range\"}[5m])",
+          "interval": "",
+          "legendFormat": "Range (GET) Rate",
+          "refId": "A"
+        },
+        {
+          "expr": "rate(grpc_server_started_total{grpc_service=\"etcdserverpb.KV\",grpc_method=\"Put\"}[5m])",
+          "interval": "",
+          "legendFormat": "Put (CREATE/UPDATE) Rate",
+          "refId": "B"
+        },
+        {
+          "expr": "rate(grpc_server_started_total{grpc_service=\"etcdserverpb.KV\",grpc_method=\"Txn\"}[5m])",
+          "interval": "",
+          "legendFormat": "Transaction Rate",
+          "refId": "C"
+        },
+        {
+          "expr": "rate(grpc_server_started_total{grpc_service=\"etcdserverpb.KV\",grpc_method=\"DeleteRange\"}[5m])",
+          "interval": "",
+          "legendFormat": "Delete Rate",
+          "refId": "D"
+        },
+        {
+          "expr": "rate(grpc_server_started_total{grpc_service=\"etcdserverpb.Watch\"}[5m])",
+          "interval": "",
+          "legendFormat": "Watch Requests Rate",
+          "refId": "E"
+        }
+      ],
+      "title": "etcd Request Rate by Operation Type",
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "yellow",
+                "value": 300
+              },
+              {
+                "color": "red",
+                "value": 1000
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 100
+      },
+      "id": 24,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.99, sum(rate(grpc_server_handling_seconds_bucket{grpc_service=\"etcdserverpb.KV\",grpc_method=\"Range\"}[5m])) by (le)) * 1000",
+          "interval": "",
+          "legendFormat": "Range (GET) 99th percentile",
+          "refId": "A"
+        },
+        {
+          "expr": "histogram_quantile(0.99, sum(rate(grpc_server_handling_seconds_bucket{grpc_service=\"etcdserverpb.KV\",grpc_method=\"Txn\"}[5m])) by (le)) * 1000",
+          "interval": "",
+          "legendFormat": "Transaction 99th percentile",
+          "refId": "C"
+        },
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(grpc_server_handling_seconds_bucket{grpc_service=\"etcdserverpb.KV\"}[5m])) by (le)) * 1000",
+          "interval": "",
+          "legendFormat": "All Operations 95th percentile",
+          "refId": "D"
+        },
+        {
+          "expr": "histogram_quantile(0.50, sum(rate(grpc_server_handling_seconds_bucket{grpc_service=\"etcdserverpb.KV\"}[5m])) by (le)) * 1000",
+          "interval": "",
+          "legendFormat": "All Operations 50th percentile",
+          "refId": "E"
+        },
+        {
+          "expr": "sum(grpc_server_handling_seconds_sum{grpc_service=\"etcdserverpb.KV\",grpc_method=\"Range\"}) / sum(grpc_server_handling_seconds_count{grpc_service=\"etcdserverpb.KV\",grpc_method=\"Range\"}) * 1000",
+          "interval": "",
+          "legendFormat": "Range (GET) Average",
+          "refId": "F"
+        },
+        {
+          "expr": "sum(grpc_server_handling_seconds_sum{grpc_service=\"etcdserverpb.KV\",grpc_method=\"Txn\"}) / sum(grpc_server_handling_seconds_count{grpc_service=\"etcdserverpb.KV\",grpc_method=\"Txn\"}) * 1000",
+          "interval": "",
+          "legendFormat": "Transaction Average",
+          "refId": "G"
+        }
+      ],
+      "title": "etcd gRPC Request Latency Distribution ⚠️",
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 100
+      },
+      "id": 19,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "expr": "sum(kube_job_status_active{namespace=~\"build-farm-tenant.*\"})",
+          "interval": "",
+          "legendFormat": "Jobs Active",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(kube_job_status_succeeded{namespace=~\"build-farm-tenant.*\"})",
+          "interval": "",
+          "legendFormat": "Jobs Succeeded",
+          "refId": "B"
+        },
+        {
+          "expr": "sum(kube_job_status_failed{namespace=~\"build-farm-tenant.*\"})",
+          "interval": "",
+          "legendFormat": "Jobs Failed",
+          "refId": "C"
+        },
+        {
+          "expr": "sum(kube_job_complete{namespace=~\"build-farm-tenant.*\",condition=\"true\"})",
+          "interval": "",
+          "legendFormat": "Jobs Complete",
+          "refId": "D"
+        }
+      ],
+      "title": "Build Farm Tenant Jobs by Status",
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 108
+      },
+      "id": 17,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "expr": "sum(kube_pod_status_phase{namespace=~\"build-farm-tenant.*\",phase=\"Running\"})",
+          "interval": "",
+          "legendFormat": "Pods Running",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(kube_pod_status_phase{namespace=~\"build-farm-tenant.*\",phase=\"Pending\"})",
+          "interval": "",
+          "legendFormat": "Pods Pending",
+          "refId": "B"
+        },
+        {
+          "expr": "sum(kube_pod_status_phase{namespace=~\"build-farm-tenant.*\",phase=\"Succeeded\"})",
+          "interval": "",
+          "legendFormat": "Pods Succeeded",
+          "refId": "C"
+        },
+        {
+          "expr": "sum(kube_pod_status_phase{namespace=~\"build-farm-tenant.*\",phase=\"Failed\"})",
+          "interval": "",
+          "legendFormat": "Pods Failed",
+          "refId": "D"
+        },
+        {
+          "expr": "sum(kube_pod_status_phase{namespace=~\"build-farm-tenant.*\",phase=\"Unknown\"})",
+          "interval": "",
+          "legendFormat": "Pods Unknown",
+          "refId": "E"
+        },
+        {
+          "expr": "sum(kube_pod_status_ready{namespace=~\"build-farm-tenant.*\",condition=\"false\"})",
+          "interval": "",
+          "legendFormat": "Pods Not Ready",
+          "refId": "F"
+        }
+      ],
+      "title": "Build Farm Tenant Pods by Status",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "30s",
+  "revision": 1,
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": [
+    "kube-burner",
+    "build-farm",
+    "openshift",
+    "etcd",
+    "performance"
+  ],
+  "templating": {
+    "list": [
+      {
+        "allValue": ".*",
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "definition": "label_values(kube_node_role{role=\"master\"}, node)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Master Nodes",
+        "multi": true,
+        "name": "_master_node",
+        "options": [],
+        "query": "label_values(kube_node_role{role=\"master\"}, node)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Build Farm Test Dashboard - Comprehensive etcd Performance",
+  "uid": "build-farm-test-comprehensive",
+  "version": 1,
+  "weekStart": ""
+}
