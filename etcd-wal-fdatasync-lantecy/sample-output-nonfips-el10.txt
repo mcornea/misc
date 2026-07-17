@@ -1,0 +1,93 @@
+==========================================================================
+  XFS fdatasync P99 Latency Regression Reproducer
+  Simulates etcd WAL + bbolt + cluster background IO
+==========================================================================
+
+  Kernel:         6.12.0-211.30.1.el10_2.x86_64
+  Host:           ip-10-0-18-188
+  Date:           2026-07-17T13:57:15Z
+  Test dir:       /host/var/tmp/xfs-fdatasync-repro
+  Duration:       40s
+  WAL rate:       500 proposals/s (burst=10)
+  WAL entry:      2300 bytes
+  WAL segment:    64 MB
+  bbolt interval: 100ms
+  bbolt pages:    20 x 4096 bytes
+  BG metadata:    40 goroutines, interval=1ms (buffered file create/rename/delete)
+  BG syncers:     0 goroutines (journal/kubelet/CRI-O fdatasync)
+  CPUs:           4
+
+--- Starting workload ---
+
+[10s] WAL: count=1476 P99=10.703685ms max=29.447149ms >10ms=23 | bbolt: count=198 P99=15.117084ms max=24.306509ms >10ms=18 | bgOps=242135
+[20s] WAL: count=2961 P99=10.653029ms max=29.447149ms >10ms=42 | bbolt: count=398 P99=13.552226ms max=24.306509ms >10ms=41 | bgOps=488128
+[30s] WAL: count=4460 P99=10.226641ms max=29.447149ms >10ms=55 | bbolt: count=598 P99=12.323343ms max=24.306509ms >10ms=59 | bgOps=733160
+[40s] WAL: count=5958 P99=10.213392ms max=30.079897ms >10ms=76 | bbolt: count=798 P99=12.20851ms max=24.306509ms >10ms=76 | bgOps=979402
+
+--- Stopping workload ---
+
+==========================================================================
+  RESULTS
+==========================================================================
+
+--- WAL fdatasync (latency-critical, like etcd WAL) ---
+    count:   5960
+    avg:     4.12792ms
+    P50:     4.991318ms
+    P90:     7.6603ms
+    P95:     8.514958ms
+    P99:     10.213392ms
+    P99.9:   15.883812ms
+    max:     30.079897ms
+    >5ms:    2977 (49.95%)
+    >10ms:   76 (1.28%)
+    >20ms:   4
+    >50ms:   0
+
+  Distribution:
+    <1ms:      1444 ( 24.2%)
+    1-5ms:     1539 ( 25.8%)
+    5-10ms:    2901 ( 48.7%)
+    10-20ms:     72 (  1.2%)  ← regression bucket
+    20-50ms:      4 (  0.1%)
+    >50ms:        0 (  0.0%)
+
+--- bbolt fdatasync (background commits, like etcd bbolt) ---
+    count:   798
+    avg:     4.874616ms
+    P50:     5.523071ms
+    P90:     9.884336ms
+    P95:     10.948215ms
+    P99:     12.20851ms
+    P99.9:   24.306509ms
+    max:     24.306509ms
+    >5ms:    401 (50.25%)
+    >10ms:   76 (9.52%)
+    >20ms:   1
+    >50ms:   0
+
+--- XFS log statistics (delta) ---
+    log_writes:      48931
+    log_force:       3787
+    log_force_sleep: 7478
+    log_noiclogs:    7081
+    sleep/force:     197.5%
+
+--- Regression analysis ---
+  The regression is tail-only: the latency distribution shifts into
+  higher buckets on 6.12 due to CIL per-CPU aggregation cost at push time.
+
+  CPUs: 4 — regression magnitude scales with CPU count:
+    4  CPUs: P99 ~1.2x, >5ms ~2x, 5-10ms bucket ~2x,  10-20ms bucket ~3x
+    8+ CPUs: P99 ~2.2x, >5ms ~5x, 10-50ms bucket ~6x  (cluster-density)
+
+  Key indicators of the regression on this run:
+    - WAL P99 crosses 10ms on kernel 6.12: true
+    - WAL >5ms percentage: 49.9% (expect ~20% on 5.14, ~50% on 6.12)
+    - noiclogs (log buffer exhaustion): 7081 (higher on 6.12 = push serialization)
+
+  Root cause: three interacting XFS kernel changes (5.15 → 6.0):
+    39823d0fac94 — CIL push serialization (prevents pipelined pushes)
+    c0fb4765c508 — CIL per-CPU lists (aggregation storms at push time)
+    919edbadebe1 — async flush removal (100% force_sleep ratio)
+

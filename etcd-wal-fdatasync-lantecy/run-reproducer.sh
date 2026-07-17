@@ -95,8 +95,9 @@ echo
 
 # Phase 2: With background IO contention (simulates cluster activity)
 echo "=== Phase 2: With background IO contention ==="
-echo "  Same as Phase 1, plus 4 background writers competing for XFS log"
-echo "  (simulates kubelet, apiserver, CRI-O IO on the same XFS filesystem)"
+echo "  Same as Phase 1, plus 40 background writers competing for XFS log"
+echo "  (simulates kubelet, apiserver, CRI-O, OVN IO on the same XFS filesystem)"
+echo "  40 bg-writers needed to generate enough CIL contention on 4-CPU nodes"
 echo "  Duration: $DURATION"
 echo
 
@@ -104,7 +105,7 @@ echo
     --dir "$TEST_DIR" \
     --duration "$DURATION" \
     --wal-rate 500 \
-    --bg-writers 4 \
+    --bg-writers 40 \
     2>&1 | tee "$OUTPUT_DIR/phase2-contention.txt"
 
 echo
@@ -114,7 +115,7 @@ echo
 echo "=== Phase 3: High proposal rate (cluster-density peak simulation) ==="
 echo "  WAL: 1000 fdatasyncs/s (peak rate during cluster-density-v2)"
 echo "  bbolt: commit every 100ms, 40 × 4KB random pages"
-echo "  Background: 4 writers"
+echo "  Background: 40 writers"
 echo "  Duration: $DURATION"
 echo
 
@@ -123,7 +124,7 @@ echo
     --duration "$DURATION" \
     --wal-rate 1000 \
     --bbolt-pages 40 \
-    --bg-writers 4 \
+    --bg-writers 40 \
     2>&1 | tee "$OUTPUT_DIR/phase3-peak.txt"
 
 echo
@@ -134,9 +135,10 @@ echo
 echo "  To compare kernels, run this script on both RHEL 9 and RHEL 10 machines"
 echo "  and compare the WAL P99 latency between the two."
 echo
-echo "  Expected regression signature:"
-echo "    RHEL 9  (kernel 5.14): WAL P99 < 8ms,   >10ms events < 0.5%"
-echo "    RHEL 10 (kernel 6.12): WAL P99 > 12ms,  >10ms events > 2%"
+echo "  Expected regression signature (40 bg-writers, 4 CPUs):"
+echo "    RHEL 9  (kernel 5.14): WAL P99 ~7-9ms,  >5ms ~10-23%, >10ms < 0.5%"
+echo "    RHEL 10 (kernel 6.12): WAL P99 ~10-11ms, >5ms ~49%,   >10ms ~1-2%"
+echo "    Regression is FIPS-independent (confirmed on both FIPS and non-FIPS clusters)"
 echo
 echo "  Root cause: XFS CIL per-CPU rework + async flush removal + push serialization"
 echo "  Commits: c0fb4765c508, 919edbadebe1, 39823d0fac94"
