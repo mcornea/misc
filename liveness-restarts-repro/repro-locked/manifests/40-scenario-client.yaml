@@ -1,0 +1,51 @@
+# 7 phase-locked load clients (calibrated 2026-10-14 to match a real Prow
+# ingress-perf run: load1 max 29.1 / mean 12.4 -> ours ~27 / ~12.6).
+# Same load shape as the base reproducer (3 m edge <-> 3 m passthrough, 1 KB
+# responses) but with WALL-CLOCK PHASE LOCK: every phase start is aligned to
+# the global grid (unix epoch mod 380) instead of free-running shell loops.
+# All replicas land their transitions on the exact 190 s marks forever and
+# self-correct after any wrk overrun, so the connection storms superimpose
+# constructively every cycle:
+#   - constant period  : two storms per 380 s cycle, on the 0/190 marks
+#   - constant amplitude: the same 3500-handshake burst every cycle
+# Grid: edge occupies [0,180), passthrough [190,370); sleeps fill the gaps.
+# The edge<->passthrough swing oscillates haproxy's CFS weight / per-request
+# profile — the driver of the vruntime corruption.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scenario-client
+  namespace: haproxy-repro
+  labels:
+    app: scenario-client
+spec:
+  replicas: 7
+  selector:
+    matchLabels:
+      app: scenario-client
+  template:
+    metadata:
+      labels:
+        app: scenario-client
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: NODE_NAME
+      containers:
+      - name: client
+        image: quay.io/cloud-bulldozer/ingress-perf:latest
+        command:
+        - /bin/sh
+        - -c
+        args:
+        - |
+          sleep_to() { echo $(( ( ($1 - $(date +%s) % 380) + 380 ) % 380 )); }
+          while true; do
+            sleep $(sleep_to 0)
+            wrk -t2 -c500 -d3m --timeout 1s https://NODE_IP:8443/healthz 2>/dev/null | grep -E 'Requests|Socket'
+            sleep $(sleep_to 190)
+            wrk -t2 -c500 -d3m --timeout 1s https://NODE_IP:8444/healthz 2>/dev/null | grep -E 'Requests|Socket'
+          done
+        resources:
+          requests:
+            cpu: 200m
+            memory: 128Mi

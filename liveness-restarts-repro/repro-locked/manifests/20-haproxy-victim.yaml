@@ -1,0 +1,89 @@
+# The probed kill target: the router-equivalent pod.
+#   - haproxy container: master-worker (-W), serves the ingress-perf frontends
+#     (http 8080 / edge TLS 8443 / passthrough L4 8444) AND its own /healthz on
+#     1936 (monitor-uri) — exactly the real router shape whose "router"
+#     container gets liveness-killed.
+#   - nginx backend container: 1 KB responses (2936 plain / 2937 TLS).
+# Probes: periodSeconds 1, timeoutSeconds 1, failureThreshold 3 — the real
+# router's probe shape; 3 consecutive missed 1 s probes = kill.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: haproxy-victim
+  namespace: haproxy-repro
+  labels:
+    app: haproxy-victim
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: haproxy-victim
+  strategy:
+    type: Recreate   # two hostNetwork pods deadlock on the ports
+  template:
+    metadata:
+      labels:
+        app: haproxy-victim
+    spec:
+      hostNetwork: true
+      nodeName: NODE_NAME
+      serviceAccountName: haproxy-sa   # needs the privileged SCC for hostNetwork
+      tolerations:
+      - operator: Exists
+      containers:
+      - name: haproxy
+        image: docker.io/library/haproxy:3.0-alpine
+        args:
+        - -W
+        - -f
+        - /usr/local/etc/haproxy/haproxy.cfg
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 1936
+            scheme: HTTP
+          periodSeconds: 1
+          timeoutSeconds: 1
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 1936
+            scheme: HTTP
+          periodSeconds: 1
+          timeoutSeconds: 1
+          failureThreshold: 3
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        volumeMounts:
+        - name: cfg
+          mountPath: /usr/local/etc/haproxy
+          readOnly: true
+      - name: backend
+        image: docker.io/library/nginx:1.27-alpine
+        resources:
+          requests:
+            cpu: 100m
+            memory: 64Mi
+        volumeMounts:
+        - name: nconf
+          mountPath: /etc/nginx
+          readOnly: true
+        - name: cfg
+          mountPath: /tls
+          readOnly: true
+        - name: www
+          mountPath: /www
+          readOnly: true
+      volumes:
+      - name: cfg
+        configMap:
+          name: haproxy-config   # haproxy.cfg + tls.pem
+      - name: nconf
+        configMap:
+          name: nginx-conf
+      - name: www
+        configMap:
+          name: nginx-www        # the ~1 KB response page

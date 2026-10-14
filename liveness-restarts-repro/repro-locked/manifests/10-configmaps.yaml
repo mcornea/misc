@@ -1,0 +1,33 @@
+# Static configmaps. haproxy-config (haproxy.cfg + tls.pem) and nginx-www
+# (1024.html) are built by run.sh from files/.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-conf
+  namespace: haproxy-repro
+data:
+  nginx.conf: |
+    worker_processes auto;
+    error_log /dev/null;
+    pid /tmp/nginx.pid;
+    events { worker_connections 8192; }
+    http {
+        access_log /dev/null;
+        server {
+            listen 2936;
+            listen 2937 ssl;
+            ssl_certificate /tls/tls.pem;
+            ssl_certificate_key /tls/tls.pem;
+            root /www;
+            location / { try_files /1024.html =200; }
+        }
+    }
+---
+# one "ok" byte-body served by every idle victim's /healthz endpoint
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: liveness-healthz
+  namespace: haproxy-repro
+data:
+  healthz: ok

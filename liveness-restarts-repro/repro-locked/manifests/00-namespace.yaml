@@ -1,0 +1,19 @@
+# Namespace + ServiceAccount for the hostNetwork router pod.
+# The privileged SCC grant is applied by run.sh (oc adm policy add-scc-to-user).
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: haproxy-repro
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: haproxy-sa
+  namespace: haproxy-repro
+---
+# RBAC for the periodic restart amplifier (rollout restart of the router pod)
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: restarter
+  namespace: haproxy-repro

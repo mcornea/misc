@@ -1,0 +1,67 @@
+# 15 idle low-weight victims on the same node, all probed /healthz with the
+# same 1 s x 3 probe shape. These are the cascade targets: when the scheduler
+# starves the node's runnable queue, they get liveness-killed en masse
+# alongside the router — the real run's "router + unrelated services die
+# together" signature (13 components in 47 s at 17:18).
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: victim
+  namespace: haproxy-repro
+  labels:
+    app: victim
+spec:
+  replicas: 15
+  selector:
+    matchLabels:
+      app: victim
+  template:
+    metadata:
+      labels:
+        app: victim
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: NODE_NAME
+      tolerations:
+      - operator: Exists
+      containers:
+      - name: victim
+        image: docker.io/library/busybox:1.36.1
+        command:
+        - /bin/httpd
+        - -f
+        - -p
+        - "1936"
+        - -h
+        - /www
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 1936
+            scheme: HTTP
+          periodSeconds: 1
+          timeoutSeconds: 1
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 1936
+            scheme: HTTP
+          periodSeconds: 1
+          timeoutSeconds: 1
+          failureThreshold: 3
+        resources:
+          requests:
+            cpu: 25m
+            memory: 64Mi
+        volumeMounts:
+        - name: www
+          mountPath: /www
+          readOnly: true
+      volumes:
+      - name: www
+        configMap:
+          name: liveness-healthz
+          items:
+          - key: healthz
+            path: healthz

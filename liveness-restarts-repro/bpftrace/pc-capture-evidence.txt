@@ -1,0 +1,32 @@
+=== OCPBUGS-127458 mechanism capture: placement-correlation.bt ===
+kernel: 6.12.0-211.64.1.el10_2  node: ip-10-0-26-11 (4 vCPU m6i.xlarge)  workload: pure-traffic ingress-perf-shaped reproducer (repro/run.sh)
+
+BEGIN monotonic_ns=5072377716941 targets=15835,15836 duration_s=600 threshold_ms=100
+
+--- signal counts (600s capture) ---
+REWEIGHT_AFTER total:            3470310
+  with placed_below_min=1:       3412124  (98.3% of all reweight placements land below min_vruntime)
+PLACE_CURR total:                3997163
+WAIT starvation onsets (watched): 1
+
+--- the WAIT onset + full ancestor ENTITY chain ---
+49075:WAIT ns=5168829588452 cpu=3 tid=15835 comm=kubelet wait_ns=432468506 state=0 task_onrq=1 task_oncpu=0
+49076:ENTITY ns=5168829589181 tid=15835 level=0 group=kubelet.service onrq=1 delayed=0 weight=1048576 vrt=71503631038 deadline=71505731038 slice=2100000 exec=5716192244 min=71503207268 avg=3117606912 load=6144 nr=6 hqueued=6 hrunnable=6 runtime_enabled=0 remaining=1 throttled=0 curr_vrt=0 curr_weight=0 curr_onrq=0
+49077:ENTITY ns=5168829591635 tid=15835 level=1 group=system.slice onrq=1 delayed=0 weight=857507 vrt=268245436384 deadline=268248164080 slice=2100000 exec=90428048573 min=268245436384 avg=0 load=1283 nr=2 hqueued=7 hrunnable=7 runtime_enabled=0 remaining=1 throttled=0 curr_vrt=0 curr_weight=0 curr_onrq=0
+49078:ENTITY ns=5168829593580 tid=15835 level=2 group= onrq=1 delayed=0 weight=87586 vrt=7413665200122 deadline=7413690932170 slice=2100000 exec=154754446230 min=7416033938736 avg=-2720687091438 load=1109 nr=3 hqueued=30 hrunnable=30 runtime_enabled=0 remaining=0 throttled=0 curr_vrt=7413565139617 curr_weight=252388 curr_onrq=1
+
+--- sample REWEIGHT_AFTER backward placements (first 3) ---
+REWEIGHT_AFTER ns=5072387055260 cpu=1 se=0xffff88eec2e89c00 w_before=1034931 w_after=1034931 vruntime_before=238359423248 vruntime_after=238357785715 delta=-1637533 placed_below_min=1
+REWEIGHT_AFTER ns=5072387058968 cpu=1 se=0xffff88ef017bd400 w_before=170895 w_after=170895 vruntime_before=6651361183064 vruntime_after=6651361250660 delta=67596 placed_below_min=1
+REWEIGHT_AFTER ns=5072387170418 cpu=1 se=0xffff88eec2e89c00 w_before=1034931 w_after=1034931 vruntime_before=238359394761 vruntime_after=238357766189 delta=-1628572 placed_below_min=1
+
+--- largest backward jumps seen (bottom of delta range) ---
+REWEIGHT_AFTER ns=5361762014724 cpu=0 se=0xffff88ef010b4c00 w_before=10240 w_after=10240 vruntime_before=10819405124222 vruntime_after=10817875371885 delta=-1529752337 placed_below_min=1
+REWEIGHT_AFTER ns=5252094951948 cpu=2 se=0xffff88ef70840c00 w_before=758 w_after=758 vruntime_before=73779307705399 vruntime_after=73778210291708 delta=-1097413691 placed_below_min=1
+
+--- sample PLACE_CURR placements below min_vruntime (first 3) ---
+PLACE_CURR ns=5072385841035 cpu=0 se=0xffff88eec5814c00 vruntime_before=9818215016830 vruntime_placed=9818214983249 delta=-33581 placed_below_min=1
+PLACE_CURR ns=5072385876657 cpu=0 se=0xffff88eec5814c00 vruntime_before=9818215019102 vruntime_placed=9818214974562 delta=-44540 placed_below_min=1
+PLACE_CURR ns=5072385904864 cpu=0 se=0xffff88eec5814c00 vruntime_before=9818215037626 vruntime_placed=9818215004481 delta=-33145 placed_below_min=1
+
+(raw 7.4M-line capture retained locally at /tmp/opencode/pc-capture.txt; this extract is the shareable evidence)

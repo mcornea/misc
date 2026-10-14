@@ -1,0 +1,76 @@
+# Phase-locked periodic restart amplifier. The real Prow run's routers
+# restarted every ~4-6 min (10+8 restarts over 54 min) — operator rolls + the
+# kill cascade. This variant locks the cadence to the client grid: fires at
+# mark 365 of every 380 s cycle — 15 s before the edge-phase start — so the
+# new haproxy pod's bind race + 5000-connection rebuild storm coincides with
+# the clients' pt->edge teardown/rebuild storm (the maximum-pressure moment)
+# at the same point of every cycle.
+# The 20 s guard sleep after each trigger prevents sub-second re-fires
+# (sleep_to returns 0 if the trigger command completes inside the same grid
+# second — observed as 4 back-to-back rollout restarts without the guard).
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: restarter
+  namespace: haproxy-repro
+rules:
+- apiGroups: ["apps"]
+  resources: ["deployments"]
+  verbs: ["get", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: restarter
+  namespace: haproxy-repro
+subjects:
+- kind: ServiceAccount
+  name: restarter
+  namespace: haproxy-repro
+roleRef:
+  kind: Role
+  name: restarter
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: haproxy-restarter
+  namespace: haproxy-repro
+  labels:
+    app: haproxy-restarter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: haproxy-restarter
+  template:
+    metadata:
+      labels:
+        app: haproxy-restarter
+    spec:
+      serviceAccountName: restarter
+      nodeSelector:
+        kubernetes.io/hostname: NODE_NAME
+      tolerations:
+      - operator: Exists
+      containers:
+      - name: restarter
+        image: quay.io/openshift/origin-cli:latest
+        command:
+        - /bin/bash
+        - -c
+        args:
+        - |
+          sleep_to() { echo $(( ( (365 - $(date +%s) % 380) + 380 ) % 380 )); }
+          sleep $(sleep_to 365)
+          while true; do
+            oc -n haproxy-repro rollout restart deploy/haproxy-victim >/dev/null 2>&1
+            echo "$(date -u +%H:%M:%SZ) haproxy rollout restart triggered"
+            sleep 20
+            sleep $(sleep_to 365)
+          done
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi

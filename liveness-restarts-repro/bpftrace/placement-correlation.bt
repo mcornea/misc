@@ -1,0 +1,175 @@
+#!/usr/bin/env bpftrace
+/*
+ * placement-correlation.bt — OCPBUGS-127458 mechanism attribution.
+ *
+ * Correlates reweight_entity()/place_entity() activity on the CURRENT entity
+ * with runnable-wait starvation onsets of watched threads, during the pinned
+ * ingress-perf workload.
+ *
+ * Target kernels: RHEL 6.12.0-55.x.el10_0 and 6.12.0-211.x.el10_2 (pre-rename
+ * BTF field names: min_vruntime / avg_vruntime / avg_load). For 6.12.0-227.el10
+ * and later substitute the struct cfs_rq fields ONLY:
+ *   avg_vruntime -> sum_w_vruntime, avg_load -> sum_weight, min_vruntime -> zero_vruntime
+ * (do not rename the avg_vruntime()/place_entity()/reweight_entity() symbols).
+ *
+ * Usage: bpftrace placement-correlation.bt <TID1> <TID2> <duration_seconds> [wait_threshold_ms]
+ *   TID1/TID2: threads to watch for starvation on the failing node (e.g. the
+ *     ovs-vswitchd handler/revalidator threads or the kubelet housekeeping thread;
+ *     discover with: ps -eLo pid,tid,comm | grep -E 'handler|revalidator|kubelet').
+ *   wait_threshold_ms: default 100.
+ *
+ * Read-only: no scheduler values are modified.
+ *
+ * Predictions under the placement hypothesis:
+ *   - On the failing kernel (55.31.1 / 211.62.1 / 227): REWEIGHT_AFTER shows large
+ *     backward vruntime deltas (placed_below_min=1) at reweight-of-curr events,
+ *     immediately preceding WAIT onsets of the watched threads.
+ *   - On 55.30.1 (pre-regression): reweight-of-curr deltas stay bounded (the old
+ *     lag-preservation path also adjusts vruntime, but from a consistent average)
+ *     and no correlated starvation onsets appear.
+ *
+ * Post-process: sort REWEIGHT_AFTER/WAIT lines by ns; correlate backward jumps with
+ * starvation onsets within the following seconds.
+ */
+
+BEGIN
+{
+  @thr_ms = ($4 > 0) ? $4 : 100;
+  printf("BEGIN monotonic_ns=%llu targets=%d,%d duration_s=%d threshold_ms=%d\n",
+    nsecs, $1, $2, $3, @thr_ms);
+}
+
+/* ---- track when the watched threads become runnable ---- */
+rawtracepoint:sched_switch
+{
+  $p = (struct task_struct *)arg1;
+  $n = (struct task_struct *)arg2;
+  if ($p->pid == $1 || $p->pid == $2) { @task[$p->pid] = (uint64)$p; }
+  if ($n->pid == $1 || $n->pid == $2) { @task[$n->pid] = (uint64)$n; }
+}
+
+tracepoint:sched:sched_switch
+{
+  if (args.prev_pid == $1 || args.prev_pid == $2) {
+    if (args.prev_state == 0 || args.prev_state == 256) {
+      @since[args.prev_pid] = nsecs;
+    } else { delete(@since[args.prev_pid]); }
+  }
+  if (args.next_pid == $1 || args.next_pid == $2) { delete(@since[args.next_pid]); }
+}
+
+tracepoint:sched:sched_wakeup
+/args.pid == $1 || args.pid == $2/
+{
+  if (!@since[args.pid]) { @since[args.pid] = nsecs; }
+}
+
+/* ---- reweight_entity(): catch reweights of the CURRENT entity ----
+ * Volume control: REWEIGHT_AFTER is printed only for backward placements
+ * (placed_below_min=1) or |delta| > 5ms; counts cover the rest. */
+kprobe:reweight_entity
+/arg1 != 0/
+{
+  $cfs_rq = (struct cfs_rq *)arg0;
+  $se = (struct sched_entity *)arg1;
+  @reweight_total = count();
+  if ($se == $cfs_rq->curr) {
+    @reweight_curr = count();
+    @rw[cpu] = (uint64)$se;
+    @rw_vr[cpu] = $se->vruntime;
+    @rw_min[cpu] = $cfs_rq->min_vruntime;
+    @rw_w[cpu] = (uint64)arg2;
+  }
+}
+
+kretprobe:reweight_entity
+/@rw[cpu]/
+{
+  $se = (struct sched_entity *)@rw[cpu];
+  $placed = $se->vruntime;
+  $before = @rw_vr[cpu];
+  $delta = (int64)($placed - $before);
+  if ($placed < @rw_min[cpu] || $delta < -5000000 || $delta > 5000000) {
+    printf("REWEIGHT_AFTER ns=%llu cpu=%d se=0x%lx w_before=%lu w_after=%lu vruntime_before=%llu vruntime_after=%llu delta=%lld placed_below_min=%d\n",
+      nsecs, cpu, (uint64)$se, @rw_w[cpu], $se->load.weight, $before, $placed,
+      $delta, $placed < @rw_min[cpu]);
+    @backward_jump = hist(-$delta / 1000000);
+  }
+  delete(@rw[cpu]);
+  delete(@rw_vr[cpu]);
+  delete(@rw_min[cpu]);
+  delete(@rw_w[cpu]);
+}
+
+/* ---- place_entity(): current-entity placements only (optional detail;
+        comment this section out if attach overhead is a concern — the
+        REWEIGHT_CURR/REWEIGHT_AFTER pair is the primary signal) ---- */
+kprobe:place_entity
+/arg1 != 0/
+{
+  $cfs_rq = (struct cfs_rq *)arg0;
+  $se = (struct sched_entity *)arg1;
+  if ($se == $cfs_rq->curr) {
+    @pe[cpu] = (uint64)$se;
+    @pe_vr[cpu] = $se->vruntime;
+    @pe_min[cpu] = $cfs_rq->min_vruntime;
+  }
+}
+
+kretprobe:place_entity
+/@pe[cpu]/
+{
+  $se = (struct sched_entity *)@pe[cpu];
+  $placed = $se->vruntime;
+  if ($placed < @pe_min[cpu]) {
+    printf("PLACE_CURR ns=%llu cpu=%d se=0x%lx vruntime_before=%llu vruntime_placed=%llu delta=%lld placed_below_min=1\n",
+      nsecs, cpu, (uint64)$se, @pe_vr[cpu], $placed,
+      (int64)($placed - @pe_vr[cpu]));
+  }
+  delete(@pe[cpu]);
+  delete(@pe_vr[cpu]);
+  delete(@pe_min[cpu]);
+}
+
+/* ---- starvation sampling with the ancestor entity chain (hierarchy.bt style) ---- */
+profile:hz:9
+{
+  for ($kv : @task) {
+    $id = $kv.0;
+    $p = (struct task_struct *)$kv.1;
+    if (@since[$id] && nsecs - @since[$id] > @thr_ms * 1000000 &&
+        cpu == $p->se.cfs_rq->rq->cpu) {
+      printf("WAIT ns=%llu cpu=%d tid=%d comm=%s wait_ns=%llu state=%u task_onrq=%u task_oncpu=%d\n",
+        nsecs, cpu, $id, $p->comm, nsecs - @since[$id], $p->__state, $p->on_rq, $p->on_cpu);
+      $se = (struct sched_entity *)((uint64)$p + offsetof(struct task_struct, se));
+      $level = 0;
+      unroll(6) {
+        if ($se != 0) {
+          $q = $se->cfs_rq;
+          $cur = $q->curr;
+          printf("ENTITY ns=%llu tid=%d level=%d group=%s onrq=%u delayed=%u weight=%llu vrt=%llu deadline=%llu slice=%llu exec=%llu min=%llu avg=%lld load=%llu nr=%u hqueued=%u hrunnable=%u runtime_enabled=%d remaining=%lld throttled=%u curr_vrt=%llu curr_weight=%llu curr_onrq=%u\n",
+            nsecs, $id, $level, str($q->tg->css.cgroup->kn->name),
+            $se->on_rq, $se->sched_delayed, $se->load.weight, $se->vruntime,
+            $se->deadline, $se->slice, $se->sum_exec_runtime,
+            $q->min_vruntime, $q->avg_vruntime, $q->avg_load, $q->nr_queued,
+            $q->h_nr_queued, $q->h_nr_runnable, $q->runtime_enabled,
+            $q->runtime_remaining, $q->throttled, $cur->vruntime,
+            $cur->load.weight, $cur->on_rq);
+          $level++;
+          $se = $se->parent;
+        }
+      }
+    }
+  }
+}
+
+interval:s:1 { @seconds++; if (@seconds >= $3) { exit(); } }
+
+END
+{
+  printf("END totals:\n");
+  print(@reweight_total);
+  print(@reweight_curr);
+  clear(@task);
+  clear(@since);
+}

@@ -63,6 +63,7 @@ func main() {
 	token := flag.String("token", "", "Bearer token (or set CI_TOKEN env var)")
 	execType := flag.String("type", "1", "Job execution type")
 	envs := flag.String("envs", "", "Comma-separated KEY=VALUE pairs for pod spec envs")
+	verbose := flag.Bool("v", false, "Verbose output")
 	flag.Parse()
 
 	args := flag.Args()
@@ -100,6 +101,13 @@ func main() {
 		os.Exit(1)
 	}
 
+	if *verbose {
+		fmt.Fprintf(os.Stderr, "POST %s\n", gangwayURL)
+		var pretty bytes.Buffer
+		json.Indent(&pretty, body, "", "  ")
+		fmt.Fprintf(os.Stderr, "Body: %s\n\n", pretty.String())
+	}
+
 	httpReq, err := http.NewRequest("POST", gangwayURL, bytes.NewReader(body))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
@@ -122,7 +130,8 @@ func main() {
 	}
 
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-		fmt.Fprintf(os.Stderr, "Error: %s\n%s\n", resp.Status, string(respBody))
+		fmt.Fprintf(os.Stderr, "Error: %d %s\n", resp.StatusCode, resp.Status)
+		fmt.Fprintf(os.Stderr, "Response body: %s\n", string(respBody))
 		os.Exit(1)
 	}
 
